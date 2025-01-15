@@ -6,19 +6,7 @@
     system = "x86_64-linux";
     pkgs = import nixpkgs { inherit system; };
     kernel = import ./kernel.nix { inherit pkgs; };
-    mkosi = pkgs.mkosi.overrideAttrs (oldAttrs: {
-      version = "24.3-unstable-2025-01-08";
-      src = pkgs.fetchFromGitHub {
-        owner = "systemd";
-        repo = "mkosi";
-        rev = "d66bba09e3dde01f35ed1a9beb6cafeca07c3488";
-        hash = "sha256-gYmZTDBwALzRI9FBTKOunZBKU5eRflH0T3vZmVLH8AU=";
-      };
-      # Ignore the patches. They can go in nixpkgs itself rather than this repo.
-      patches = [];
-      postPatch = "";
-      postInstall = "mkdir -p $out/share/man/man1";
-    });
+    mkosi = pkgs.mkosi;
   in {
     devShells.${system}.default = pkgs.mkShell {
       nativeBuildInputs = with pkgs; [
