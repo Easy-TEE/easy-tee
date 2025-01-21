@@ -13,10 +13,8 @@
         apt dpkg gnupg debootstrap
         squashfsTools dosfstools e2fsprogs mtools
         cryptsetup util-linux zstd qemu
-        libseccomp
       ] ++ [ mkosi ];
 
-      LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath [ pkgs.libseccomp ];
       KERNEL_IMAGE = "${kernel}/bzImage";
       KERNEL_VERSION = kernel.version;
     };
