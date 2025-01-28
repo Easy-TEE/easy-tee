@@ -26,6 +26,11 @@
       '';
     };
   in {
+    packages.${system} = {
+      kernel = kernel;
+      default = kernel;
+    };
+
     devShells.${system}.default = pkgs.mkShell {
       nativeBuildInputs = with pkgs; [
         apt dpkg gnupg debootstrap
