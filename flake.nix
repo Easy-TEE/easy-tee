@@ -40,6 +40,10 @@
 
       KERNEL_IMAGE = "${kernel}/bzImage";
       KERNEL_VERSION = kernel.version;
+
+      shellHook = ''
+        mkdir -p mkosi.packages mkosi.cache mkosi.builddir
+      '';
     };
   };
 }
