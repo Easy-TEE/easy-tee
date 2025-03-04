@@ -7,3 +7,4 @@ mkosi.builddir/
 *.qcow2
 .claudesync/
 .claudeignore
+tmp/
