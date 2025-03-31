@@ -2,7 +2,7 @@
 #
 # Note env variables: DESTDIR, BUILDROOT, GOCACHE
 
-make_package() {
+make_git_package() {
     local package="$1"
     local version="$2"
     local git_url="$3"
@@ -33,6 +33,6 @@ make_package() {
 }
 
 # Example usage:
-# make_package "myapp" "v1.0.0" "https://github.com/user/myapp.git" "make build" \
+# make_git_package "myapp" "v1.0.0" "https://github.com/user/myapp.git" "make build" \
 #    "bin/myapp:/usr/bin/myapp" \
 #    "config/myapp.conf:/etc/myapp/myapp.conf"
