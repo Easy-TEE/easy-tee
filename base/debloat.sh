@@ -35,7 +35,6 @@ debloat_paths=(
     "/usr/lib/tmpfiles.d"
     "/etc/systemd/network"
     "/etc/credstore"
-    "/usr/lib/x86_64-linux-gnu/security"
 )
 
 for p in "${debloat_paths[@]}"; do rm -rf "$BUILDROOT$p"; done
