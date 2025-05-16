@@ -27,6 +27,7 @@ debloat_paths=(
     "/usr/share/mime"
     "/usr/lib/modules"
     "/usr/lib/udev/hwdb.d"
+    "/usr/lib/udev/hwdb.bin"
     "/usr/lib/systemd/catalog"
     "/usr/lib/systemd/user"
     "/usr/lib/systemd/user-generators"
