@@ -28,7 +28,7 @@
       extraDeps = with pkgs; [ 
         apt dpkg gnupg debootstrap
         squashfsTools dosfstools e2fsprogs mtools mustache-go
-        cryptsetup util-linux zstd
+        cryptsetup util-linux zstd which qemu-utils
       ] ++ [ reprepro ];
     };
   in {
