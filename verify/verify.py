@@ -16,15 +16,37 @@ def sha256(filepath):
             h.update(chunk)
     return h.hexdigest()
 
+def get_source_package(binary_name):
+    """Get source package name using apt-cache."""
+    try:
+        result = subprocess.run(
+            ["apt-cache", "show", binary_name], 
+            capture_output=True, 
+            text=True
+        )
+        for line in result.stdout.split('\n'):
+            if line.startswith('Source: '):
+                source = line[8:].split(' ')[0].strip()
+                return source
+        return binary_name
+    except:
+        return binary_name
+
 def verify_package(pkg, work_dir, cache_dir):
     """Verify a single package's reproducibility."""
     name, version, arch = pkg["name"], pkg["version"], pkg["architecture"]
     arch = "all" if arch == "all" else "amd64"
     
-    # Download buildinfo
-    folder = name[:4] if name.startswith("lib") else name[0]
-    buildinfo = f"{name}_{version}_{arch}.buildinfo"
-    url = f"https://buildinfos.debian.net/buildinfo-pool/{folder}/{name}/{buildinfo}"
+    # Get source package name
+    source_name = get_source_package(name)
+    
+    # Strip epoch from version for buildinfo URL
+    version_no_epoch = version.split(':', 1)[-1]
+    
+    # Download buildinfo using source package name
+    folder = source_name[:4] if source_name.startswith("lib") else source_name[0]
+    buildinfo = f"{source_name}_{version_no_epoch}_{arch}.buildinfo"
+    url = f"https://buildinfos.debian.net/buildinfo-pool/{folder}/{source_name}/{buildinfo}"
     
     if subprocess.run(["wget", "-q", url], cwd=work_dir).returncode != 0:
         return "no-buildinfo"
@@ -37,9 +59,12 @@ def verify_package(pkg, work_dir, cache_dir):
                      cwd=work_dir, capture_output=True).returncode != 0:
         return "build-failed"
     
-    # Compare hashes
-    rebuilt = list(out_dir.glob(f"{name}_{version}_{arch}.deb"))
-    cached = cache_dir / f"cache/apt/archives/{name}_{version}_{arch}.deb"
+    # Look for the specific binary package we want
+    rebuilt = list(out_dir.glob(f"{name}_{version_no_epoch}_{arch}.deb"))
+    
+    # For cached files, replace : with %3a
+    version_encoded = version.replace(':', '%3a')
+    cached = cache_dir / f"cache/apt/archives/{name}_{version_encoded}_{arch}.deb"
     
     if not rebuilt:
         return "no-output"
