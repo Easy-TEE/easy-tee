@@ -44,7 +44,7 @@
       KERNEL_VERSION = kernel.version;
 
       shellHook = ''
-        mkdir -p mkosi.packages mkosi.cache mkosi.builddir
+        mkdir -p mkosi.packages mkosi.cache mkosi.builddir ~/.cache/mkosi
       '';
     };
   };
