@@ -1,3 +1,15 @@
 #!/bin/sh
+set -euxo pipefail
+
 mkosi-chroot passwd -u root
 echo "root:dqSPjo4p" | mkosi-chroot chpasswd
+
+if [ -f "$BUILDROOT/etc/default/dropbear" ]; then
+    # Remove -s, -w, -g flags from dropbear args
+    sed -i '/^DROPBEAR_EXTRA_ARGS=/s/-[swg] \?//g' "$BUILDROOT/etc/default/dropbear"
+else
+    echo "PermitRootLogin yes" >> "$BUILDROOT/etc/ssh/sshd_config"
+    echo "PasswordAuthentication yes" >> "$BUILDROOT/etc/ssh/sshd_config"
+    mkosi-chroot systemctl enable ssh.service
+    mkosi-chroot systemctl unmask ssh.service ssh.socket
+fi
