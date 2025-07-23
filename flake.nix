@@ -34,7 +34,7 @@
     devShells.${system}.default = pkgs.mkShell {
       nativeBuildInputs = [ pkgs.qemu mkosi ];
       shellHook = ''
-        mkdir -p mkosi.packages mkosi.cache mkosi.builddir
+        mkdir -p mkosi.packages mkosi.cache mkosi.builddir ~/.cache/mkosi
       '';
     };
   };

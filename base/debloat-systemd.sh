@@ -9,6 +9,7 @@ systemd_svc_whitelist=(
     "sockets.target" 
     "local-fs.target"
     "local-fs-pre.target"
+    "network-online.target"
     "slices.target"
     "systemd-journald.service"
     "systemd-journald.socket"
