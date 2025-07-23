@@ -5,7 +5,6 @@ set -euo pipefail
 KERNEL_VERSION="6.13.12"
 KERNEL_REPO="https://github.com/gregkh/linux"
 BASE_CONFIG="$SRCDIR/kernel/kernel-yocto.config"
-SNIPPETS_DIR="$SRCDIR/kernel/snippets"
 
 echo "Building kernel $KERNEL_VERSION with snippets: ${KERNEL_CONFIG_SNIPPETS:-none}"
 
@@ -15,7 +14,7 @@ cp "$BASE_CONFIG" "$config_file"
 if [[ -n "${KERNEL_CONFIG_SNIPPETS:-}" ]]; then
     IFS=',' read -ra snippets <<< "$KERNEL_CONFIG_SNIPPETS"
     for snippet in "${snippets[@]}"; do
-        snippet_file="$SNIPPETS_DIR/${snippet}.config"
+        snippet_file="$SRCDIR/$snippet"
         [[ -f "$snippet_file" ]] && cat "$snippet_file" >> "$config_file"
     done
 fi
@@ -41,8 +40,8 @@ else
     export KBUILD_BUILD_TIMESTAMP="$(date -u -d @${SOURCE_DATE_EPOCH:-$(date +%s)})"
     export KBUILD_BUILD_USER="mkosi" KBUILD_BUILD_HOST="mkosi-builder"
     
-    mkosi-chroot make olddefconfig
-    mkosi-chroot make -j "$(nproc 2>/dev/null || echo 2)" bzImage ARCH=x86_64 CONFIG_EFI_STUB=y
+    mkosi-chroot --chdir "/build/kernel-${KERNEL_VERSION}" make olddefconfig
+    mkosi-chroot --chdir "/build/kernel-${KERNEL_VERSION}" make -j "$(nproc 2>/dev/null || echo 2)" bzImage ARCH=x86_64 CONFIG_EFI_STUB=y
     
     # Cache result
     mkdir -p "$cache_dir"
