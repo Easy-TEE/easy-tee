@@ -8,6 +8,7 @@ find "$BUILDROOT/var/cache" -type f -delete
 debloat_paths=(
     "/etc/machine-id"
     "/etc/*-"
+    "/etc/ssh/ssh_host_*_key*"
     "/usr/share/doc"
     "/usr/share/man"
     "/usr/share/info"
@@ -39,4 +40,4 @@ debloat_paths=(
     "/nix"
 )
 
-for p in "${debloat_paths[@]}"; do rm -rf "$BUILDROOT$p"; done
+for p in "${debloat_paths[@]}"; do rm -rf $BUILDROOT$p; done
