@@ -4,8 +4,8 @@ WRAPPER := scripts/env_wrapper.sh
 build build-dev: check-module
 
 check-module:
-ifndef MODULE
-	$(error MODULE is not set. Please specify MODULE=<module> when running make build or make build-dev)
+ifndef IMAGE
+	$(error IMAGE is not set. Please specify IMAGE=<image> when running make build or make build-dev)
 endif
 
 .PHONY: all build build-dev setup measure clean help
@@ -19,11 +19,11 @@ setup:
 
 # Build module
 build: setup
-	@$(WRAPPER) mkosi --force -I $(MODULE).conf
+	@$(WRAPPER) mkosi --force -I $(IMAGE).conf
 
 # Build module with devtools profile
 build-dev: setup
-	@$(WRAPPER) mkosi --force --profile=devtools -I $(MODULE).conf
+	@$(WRAPPER) mkosi --force --profile=devtools -I $(IMAGE).conf
 
 # Run measured-boot on the EFI file
 measure:
@@ -46,7 +46,7 @@ clean:
 help:
 	@echo "Mkosi TEE Build System"
 	@echo ""
-	@echo "Usage: make [target] [MODULE=<module>]"
+	@echo "Usage: make [target] [IMAGE=<image>]"
 	@echo ""
 	@echo "Targets:"
 	@echo "  build       - Build the specified module"
@@ -57,6 +57,6 @@ help:
 	@echo "  help        - Show this help message"
 	@echo ""
 	@echo "Examples:"
-	@echo "  make build MODULE=bob"
-	@echo "  make build-dev MODULE=l2-builder"
+	@echo "  make build IMAGE=bob"
+	@echo "  make build-dev IMAGE=l2-builder"
 	@echo "  make measure"
