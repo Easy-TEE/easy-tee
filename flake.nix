@@ -34,19 +34,24 @@
       };
       vendorHash = "sha256-NrZjORe/MjfbRDcuYVOGjNMCo1JGWvJDNVEPojI3L/g=";
     };
-    mkosi = pkgs.mkosi.override {
-      extraDeps = with pkgs; [ 
-        apt dpkg gnupg debootstrap
-        squashfsTools dosfstools e2fsprogs mtools mustache-go
-        cryptsetup util-linux zstd which qemu-utils parted
-      ] ++ [ reprepro ];
-    };
+    mkosi = system: 
+      let pkgsForSystem = import nixpkgs { inherit system; };
+      in pkgsForSystem.mkosi.override {
+        extraDeps = with pkgsForSystem; [
+          apt dpkg gnupg debootstrap
+          squashfsTools dosfstools e2fsprogs mtools mustache-go
+          cryptsetup util-linux zstd which qemu-utils parted
+        ] ++ [ reprepro ];
+      };
   in {
-    devShells.${system}.default = pkgs.mkShell {
-      nativeBuildInputs = [ mkosi measured-boot ];
-      shellHook = ''
-        mkdir -p mkosi.packages mkosi.cache mkosi.builddir ~/.cache/mkosi
-      '';
-    };
+    devShells = builtins.listToAttrs (map (system: {
+      name = system;
+      value = pkgs.mkShell {
+        nativeBuildInputs = [ (mkosi system) measured-boot ];
+        shellHook = ''
+          mkdir -p mkosi.packages mkosi.cache mkosi.builddir ~/.cache/mkosi
+        '';
+      };
+    }) [ "x86_64-linux" "aarch64-linux" ]);
   };
 }
