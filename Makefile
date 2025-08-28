@@ -13,16 +13,20 @@ endif
 # Default target
 all: build
 
+# Ensure repo was cloned with correct permissions
+check-perms:
+	@scripts/check_perms.sh
+
 # Setup dependencies (Linux only)
 setup:
 	@scripts/setup_deps.sh
 
 # Build module
-build: setup
+build: check-perms setup
 	@$(WRAPPER) mkosi --force -I $(IMAGE).conf
 
 # Build module with devtools profile
-build-dev: setup
+build-dev: check-perms setup
 	@$(WRAPPER) mkosi --force --profile=devtools -I $(IMAGE).conf
 
 # Run measured-boot on the EFI file
