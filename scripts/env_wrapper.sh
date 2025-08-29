@@ -98,7 +98,7 @@ if should_use_lima; then
         )
     fi
 
-    lima_exec "cd ~/mnt && nix develop -c ${cmd[*]@Q}"
+    lima_exec "cd ~/mnt && /home/debian/.nix-profile/bin/nix develop -c ${cmd[*]@Q}"
 
     if is_mkosi_cmd; then
         lima_exec "mkdir -p ~/mnt/build; mv '$mkosi_output'/* ~/mnt/build/ || true"
