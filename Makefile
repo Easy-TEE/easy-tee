@@ -23,11 +23,13 @@ setup:
 
 # Build module
 build: check-perms setup
-	@$(WRAPPER) mkosi --force -I $(IMAGE).conf
+	@$(WRAPPER) ./scripts/mkosi_wrapper.sh \
+	    --force -I $(IMAGE).conf
 
 # Build module with devtools profile
 build-dev: check-perms setup
-	@$(WRAPPER) mkosi --force --profile=devtools -I $(IMAGE).conf
+	@$(WRAPPER) ./scripts/mkosi_wrapper.sh \
+	    --force --profile=devtools -I $(IMAGE).conf
 
 # Run measured-boot on the EFI file
 measure:

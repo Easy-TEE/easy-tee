@@ -36,7 +36,12 @@ provision:
     script: |
       #!/bin/bash
       set -euo pipefail
+
       mkdir -p ~/.config/nix
       echo 'experimental-features = nix-command flakes' > ~/.config/nix/nix.conf
       echo 'extra-platforms = x86_64-linux' >> ~/.config/nix/nix.conf
       sh <(curl -L https://nixos.org/nix/install) --no-daemon --nix-extra-conf-file ~/.config/nix/nix.conf
+
+      # nix adds its env to .profile, but not to .bashrc
+      # .profile is not sourced when connecting through ssh, so copy to .bashrc
+      grep nix .profile >> .bashrc
