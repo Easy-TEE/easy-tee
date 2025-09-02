@@ -40,8 +40,7 @@
     };
     mkosi = system: let
       pkgsForSystem = import nixpkgs {inherit system;};
-    in
-      pkgsForSystem.mkosi.override {
+      mkosi-unwrapped = pkgsForSystem.mkosi.override {
         extraDeps = with pkgsForSystem;
           [
             apt
@@ -62,6 +61,17 @@
           ]
           ++ [reprepro];
       };
+    in
+      # Create a wrapper script that runs mkosi with unshare
+      # Unshare is needed to create files owned by multiple uids/gids
+      pkgsForSystem.writeShellScriptBin "mkosi" ''
+        exec ${pkgsForSystem.util-linux}/bin/unshare \
+          --map-auto --map-current-user \
+          --setuid=0 --setgid=0 \
+          -- \
+          env PATH="$PATH" \
+          ${mkosi-unwrapped}/bin/mkosi "$@"
+      '';
   in {
     devShells = builtins.listToAttrs (map (system: {
       name = system;

@@ -68,7 +68,7 @@ fi
 cmd=("$@")
 
 is_mkosi_cmd() {
-    [[ "${cmd[0]}" == "./scripts/mkosi_wrapper.sh" ]]
+    [[ "${cmd[0]}" == "mkosi" ]] || [[ "${cmd[0]}" == *"/mkosi" ]]
 }
 
 if is_mkosi_cmd && [ -n "${MKOSI_EXTRA_ARGS:-}" ]; then
