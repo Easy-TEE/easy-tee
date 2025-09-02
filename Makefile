@@ -53,7 +53,8 @@ measure: ## Export TDX measurements for the built image
 		echo "Error: build/tdx-debian.efi not found. Run 'make build' first."; \
 		exit 1; \
 	fi
-	@$(WRAPPER) measured-boot build/tdx-debian build/measurements.json
+	@$(WRAPPER) measured-boot build/tdx-debian.efi build/measurements.json --direct-uki
+	echo "Measurements exported to build/measurements.json"
 
 # Clean build artifacts
 clean: ## Remove cache and build artifacts

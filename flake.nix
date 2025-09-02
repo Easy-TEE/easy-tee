@@ -33,8 +33,8 @@
       src = pkgs.fetchFromGitHub {
         owner = "flashbots";
         repo = "measured-boot";
-        rev = "338d27a9fc124e085e14dfdcff875f71fd61ff14";
-        sha256 = "sha256-Cr0pg/1IG7Zz4Kos9K3PRjG81EIefhk0sMKQM7p6x28=";
+        rev = "v1.2.0";
+        sha256 = "sha256-FjzJ6UQYyrM+U3OCMBpzd1wTxlikA5LI+NKrylGlG3c=";
       };
       vendorHash = "sha256-NrZjORe/MjfbRDcuYVOGjNMCo1JGWvJDNVEPojI3L/g=";
     };
