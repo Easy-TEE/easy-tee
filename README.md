@@ -1,33 +1,24 @@
 # Easy-TEE
 
-Easy-TEE is a toolkit that turns your software into a secure, minimal VM image and lets anyone verify that it hasn’t been tampered with or modified.
-It uses trusted execution environments (TEEs), like Intel TDX, and cryptographic attestations to prove exactly what code is running.
+Easy-TEE is a toolkit for building reproducible, minimal VM images that run inside trusted execution environments (TEEs) and produce cryptographic attestations of exactly what's running. It is built on the same foundations as [Flashbots](https://flashbots.net/)' production TEE products and stays in sync with upstream improvements.
 
-This repository is built from the same production-grade foundations that power Flashbots’ TEE products.
-It is maintained as a mirror, so it stays in sync with upstream improvements from other Flashbots products.
+## What you can do with it
 
-## What Makes Easy-TEE different?
+- Package any Debian-compatible software stack into a TEE image without changing your code
+- Deploy the same image to GCP, Azure, or self-hosted TDX hardware
+- Produce bit-identical builds from either a Linux or macOS host
+- Generate attestation values that let users verify a running instance matches the published source
+- Audit every component of your image
 
-Images built with Easy-TEE run across Azure, GCP, and self-hosted environments, and support any software that runs on Debian Linux.
-This means you can bring your existing software stack without changing your code, and also allow others to verify exactly what’s running.
-Builds can be produced from either Linux or macOS without changing the resulting image.
+## How it works
 
-Easy-TEE also gives you full control over what runs inside the VM image, with no extra layers between your software and the system it runs on.
-The contents of images are fully transparent and easily auditable.
-
-## How it Works
-
-Easy-TEE builds minimal, reproducible VM images using [mkosi](https://github.com/systemd/mkosi).
-Each image runs a stripped-down, security-hardened version of Debian with only the necessary dependencies required to run your software.
-Image builds are completely reproducible and deterministic, meaning anyone can reproduce them bit-for-bit and verify that their image matches a live instance.
+Easy-TEE uses [mkosi](https://github.com/systemd/mkosi) to build minimal, security-hardened Debian images containing only what your software needs to run. Your software runs directly on Linux with no extra abstraction layers. Builds are deterministic, so anyone with the same source tree can reproduce the image bit-for-bit and check that it matches what's running on a deployed instance.
 
 ## Getting Started
 
 ### Prerequisites
 
-By default, builds run inside a [Lima](https://lima-vm.io/) VM, which requires installing Lima prior to using this repository. This works on both Mac and Linux and requires no other dependencies.
-
-Alternatively, it is possible to build natively with [Nix](https://nixos.org/download/) by creating a `.bypass-lima` file in the repo root.
+By default, builds run inside a [Lima](https://lima-vm.io/) VM, which works on both macOS and Linux and requires no other dependencies. Alternatively, you can build natively with [Nix](https://nixos.org/download/) on Linux by creating a `.bypass-lima` file in the repo root.
 
 ### 1. Fork the repository
 
@@ -38,22 +29,16 @@ cd easy-tee
 
 ### 2. Configure your image
 
-Follow the guides in the repository wiki to define your image, add your software, and configure any required dependencies:
-
-https://github.com/flashbots/easy-tee/wiki
+Follow the guides in the [wiki](https://github.com/flashbots/easy-tee/wiki) to define your image, add your software, and configure any required dependencies.
 
 ### 3. Build your image
-
-Once your image is configured, build it with:
 
 ```bash
 make build IMAGE=<your-image-name>
 ```
 
-This will produce a reproducible, hardened VM image that can be deployed and verified by your users through attestation.
+This produces a reproducible, hardened VM image that can be deployed and verified through attestation.
 
 ### 4. Deploy your image
 
-Follow the deployment guide to deploy your image to a cloud environment or a TDX-compatible server:
-
-https://github.com/flashbots/easy-tee/wiki/Deployment-Guide
+See the [Deployment Guide](https://github.com/flashbots/easy-tee/wiki/Deployment-Guide) for cloud and self-hosted deployment instructions.
