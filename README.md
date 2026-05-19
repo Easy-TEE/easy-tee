@@ -29,7 +29,7 @@ cd easy-tee
 
 ### 2. Configure your image
 
-Follow the guides in the [wiki](https://github.com/flashbots/easy-tee/wiki) to define your image, add your software, and configure any required dependencies.
+Follow the guides in the [wiki](https://github.com/easy-tee/easy-tee/wiki) to define your image, add your software, and configure any required dependencies.
 
 ### 3. Build your image
 
@@ -41,4 +41,4 @@ This produces a reproducible, hardened VM image that can be deployed and verifie
 
 ### 4. Deploy your image
 
-See the [Deployment Guide](https://github.com/flashbots/easy-tee/wiki/Deployment-Guide) for cloud and self-hosted deployment instructions.
+See the wiki for [Deploying to GCP](https://github.com/easy-tee/easy-tee/wiki/Deploying-to-GCP), [Deploying to Azure](https://github.com/easy-tee/easy-tee/wiki/Deploying-to-Azure), and [Self-hosted Deployments](https://github.com/easy-tee/easy-tee/wiki/Self-hosted-Deployments).
