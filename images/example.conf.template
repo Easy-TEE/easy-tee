@@ -1,0 +1,11 @@
+[Distribution]
+# Pin to a Debian snapshot for reproducibility.
+# See https://github.com/easy-tee/easy-tee/wiki/Getting-Started
+Snapshot=
+
+[Include]
+Include=shared/mkosi.conf
+Include=modules/example/mkosi.conf
+
+[Config]
+Profiles=gcp,azure

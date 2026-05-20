@@ -1,0 +1,11 @@
+[Unit]
+Description=Example webserver
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+ExecStart=/usr/bin/python3 /opt/example/webserver.py
+Restart=always
+
+[Install]
+WantedBy=minimal.target

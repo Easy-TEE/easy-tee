@@ -1,0 +1,18 @@
+#!/bin/bash
+
+# Print commands, exit on error, treat unset variables as errors
+set -euxo pipefail
+
+source "$SRCDIR/scripts/build_rust_package.sh"
+
+build_opts=(
+    attest # Package name
+    732adb0eb6418153994963562d507a7e0ba38d25 # Commit sha, tag, or branch to build
+    "https://github.com/easy-tee/attest.git" # Repository URL
+    "" # Compiled binary path (optional)
+    prove # Extra features to enable (optional)
+    "-l z -l zstd" # Extra RUSTFLAGS (optional)
+    attest-cli # Cargo package name (optional, defaults to package name)
+)
+
+build_rust_package "${build_opts[@]}"
